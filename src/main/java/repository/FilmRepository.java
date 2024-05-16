@@ -1,5 +1,6 @@
 package repository;
 
+import entity.Actor;
 import entity.Film;
 import entity.Genre;
 import exception.NotFoundException;
@@ -15,6 +16,7 @@ public class FilmRepository {
 
     public Film postFilm(Film film) {
         boolean presentGenres = film.getGenres() != null;
+        boolean presentActors = film.getActors() != null;
 
         try (Connection connection = DriverManager.getConnection(getUrl(), getUsername(), getPassword())) {
             String sql = "INSERT INTO films (name, description) VALUES( ?, ?);";
@@ -33,6 +35,8 @@ public class FilmRepository {
             }
 
             if (presentGenres) saveGenreInFilm(film, connection);
+            if (presentActors) saveActorInFilm(film, connection);
+
 
         } catch (RuntimeException | SQLException e) {
             throw new RuntimeException(e);
@@ -40,8 +44,23 @@ public class FilmRepository {
         return film;
     }
 
+    private void saveActorInFilm(Film film, Connection connection) throws SQLException {
+        String sql = "INSERT INTO films_actors (film_id, actor_id) VALUES(?, ?);";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+            for (Actor actor : film.getActors()) {
+                preparedStatement.setLong(1, film.getId());
+                preparedStatement.setLong(2, actor.getActorId());
+                preparedStatement.addBatch();
+            }
+
+            preparedStatement.executeBatch();
+        }
+    }
+
     public Film patchFilm(Film film) {
         boolean presentGenres = film.getGenres() != null;
+        boolean presentActors = film.getActors() != null;
         Optional<Film> oldFilm = getFilmById(film.getId());
 
         if (oldFilm.isPresent()) {
@@ -57,7 +76,10 @@ public class FilmRepository {
                 }
 
                 removeGenreFromFilm(oldFilm.get(), connection);
+                removeActorFromFilm(oldFilm.get(), connection);
                 if (presentGenres) saveGenreInFilm(film, connection);
+                if (presentActors) saveActorInFilm(film, connection);
+
 
             } catch (RuntimeException | SQLException e) {
                 throw new RuntimeException(e);
@@ -65,6 +87,17 @@ public class FilmRepository {
             return film;
         } else {
             throw new NotFoundException("Film not found");
+        }
+    }
+
+    private void removeActorFromFilm(Film oldFilm, Connection connection) throws SQLException {
+        String sql = "DELETE FROM films_actors WHERE film_id = ?;";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setLong(1, oldFilm.getId());
+            preparedStatement.executeBatch();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 

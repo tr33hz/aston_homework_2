@@ -13,21 +13,23 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 public class FilmDto {
+
     Long id;
     String name;
     String description;
     List<GenreDto> genres;
+    List<ActorDto> actors;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         FilmDto filmDto = (FilmDto) o;
-        return Objects.equals(id, filmDto.id) && Objects.equals(name, filmDto.name) && Objects.equals(description, filmDto.description) && Objects.equals(genres, filmDto.genres);
+        return Objects.equals(id, filmDto.id) && Objects.equals(name, filmDto.name) && Objects.equals(description, filmDto.description) && Objects.equals(genres, filmDto.genres) && Objects.equals(actors, filmDto.actors);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, description, genres);
+        return Objects.hash(id, name, description, genres, actors);
     }
 }

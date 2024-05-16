@@ -1,4 +1,4 @@
-package entity;
+package entity.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,23 +12,22 @@ import java.util.Objects;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Film {
-    Long id;
+public class ActorDto {
+
+    Long actorId;
     String name;
-    String description;
-    List<Genre> genres;
-    List<Actor> actors;
+    List<FilmDto> films;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Film film = (Film) o;
-        return Objects.equals(id, film.id) && Objects.equals(name, film.name) && Objects.equals(description, film.description) && Objects.equals(genres, film.genres) && Objects.equals(actors, film.actors);
+        ActorDto actorDto = (ActorDto) o;
+        return Objects.equals(actorId, actorDto.actorId) && Objects.equals(name, actorDto.name) && Objects.equals(films, actorDto.films);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, description, genres, actors);
+        return Objects.hash(actorId, name, films);
     }
 }

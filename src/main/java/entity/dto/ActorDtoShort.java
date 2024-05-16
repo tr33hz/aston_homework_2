@@ -1,31 +1,30 @@
 package entity.dto;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Objects;
 
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class GenreDto {
+public class ActorDtoShort {
 
-    Long id;
+    Long actorId;
     String name;
 
     @Override
     public boolean equals(Object o) {
+
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        GenreDto genreDto = (GenreDto) o;
-        return Objects.equals(id, genreDto.id) && Objects.equals(name, genreDto.name);
+        ActorDtoShort that = (ActorDtoShort) o;
+        return Objects.equals(actorId, that.actorId) && Objects.equals(name, that.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name);
+        return Objects.hash(actorId, name);
     }
 }

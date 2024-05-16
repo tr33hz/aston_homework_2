@@ -10,6 +10,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 public class FilmDtoShort {
+
     Long id;
     String name;
     String description;

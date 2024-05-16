@@ -19,6 +19,14 @@
         <servlet-name>GenreServlet</servlet-name>
         <url-pattern>/genre/*</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>ActorServlet</servlet-name>
+        <servlet-class>servlets.ActorServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ActorServlet</servlet-name>
+        <url-pattern>/actor/*</url-pattern>
+    </servlet-mapping>
     <listener>
         <listener-class>Database.DBInitializer</listener-class>
     </listener>
